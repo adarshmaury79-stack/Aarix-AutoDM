@@ -166,7 +166,7 @@ P.faq=()=>nav()+`<div class="wrap" style="max-width:700px"><h2 class="s">FAQ</h2
 P.connect=()=>nav()+`<div class="wrap" style="max-width:460px"><div class="card" style="text-align:center;padding:26px 18px">${D.conn&&!D.demo&&D.ig?`<img class="lgx" style="width:84px;height:84px;object-fit:cover" alt="" referrerpolicy="no-referrer" src="${esc(D.ig.pic||LOGOSRC)}" onerror="this.onerror=null;this.src=LOGOSRC"><h2 style="margin:8px 0 4px">@${esc(D.ig.u)}</h2><p class="sub" style="margin-bottom:16px">Instagram connected.</p><a class="btn ig" style="width:100%" href="#reels">View my reels</a><button class="btn sec" id="dc" style="width:100%;margin-top:10px">Disconnect</button>`:`<h2 style="margin:0 0 8px">Connect your Instagram</h2><p class="sub" style="margin-bottom:18px">Tap the button, choose your Instagram account on the Meta screen and approve. Then your reels appear here.</p>${IGERR?`<p class="sub" style="color:#dc2626;word-break:break-word;margin-bottom:12px">${esc(IGERR)}</p>`:''}<button class="btn ig big" id="igc" style="width:100%">Continue with Instagram</button><button class="btn sec" id="cdm" style="width:100%;margin-top:12px">Explore demo (no Instagram)</button><ul class="sub" style="text-align:left;margin:20px 0 0;padding-left:18px"><li>Business or Creator account</li><li>Message requests allowed</li></ul>`}${D.user?`<p class="sub" style="margin:18px 0 0">Signed in as ${esc(D.user.email||D.user.name)} · <a href="#" id="so2" style="color:var(--acc)">Sign out</a></p>`:''}</div></div>${foot()}`;
 B.connect=()=>{
   const go=$('igc');
-  if(go)go.onclick=()=>{IGERR='';const st=Math.random().toString(36).slice(2);try{sessionStorage.setItem('ig-st',st)}catch(e){}
+  if(go)go.onclick=()=>{IGERR='';const st=Math.random().toString(36).slice(2);try{localStorage.setItem('ig-st',st)}catch(e){}
     location.href='https://www.facebook.com/dialog/oauth?client_id='+META_APP_ID+'&config_id='+META_CONFIG+'&display=popup&override_default_response_type=true&redirect_uri='+encodeURIComponent(RU)+'&response_type=code&state='+st+'&prompt=login'};
   const dm=$('cdm');
   if(dm)dm.onclick=()=>{D.conn=true;D.demo=true;D.ig=null;D.sess=null;REELS=DEMO_REELS.slice();save();toast('Demo mode on. Data here is only simulated.');location.hash='reels'};
@@ -247,8 +247,8 @@ document.addEventListener('click',e=>{const t=e.target,m=$('pfm'),b=t.closest('[
   if(t.closest('[data-lo]')){if(D.user)signOut();else{D.guest=false;save();render()}return}
   if(m&&!t.closest('#pfm'))m.classList.add('hide')});
 (async()=>{try{const sp=new URLSearchParams(location.search),c=sp.get('code'),st=sp.get('state');if(!c)return;
-  let ok=false;try{ok=!!st&&st===sessionStorage.getItem('ig-st')}catch(e){}
-  history.replaceState(null,'',location.pathname+'#connect');
+  let ok=false;try{ok=!!st&&st===localStorage.getItem('ig-st')}catch(e){}
+  history.replaceState(null,'',location.pathname+'#connect');try{localStorage.removeItem('ig-st')}catch(e){}
   if(!ok){IGERR='Instagram login could not be verified. Please tap Continue with Instagram again.';return}
   const r=await fetch(API_BASE+'/ig/callback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:c,redirect_uri:RU})});
   const j=await r.json().catch(()=>({}));

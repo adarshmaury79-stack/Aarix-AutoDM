@@ -167,7 +167,7 @@ P.connect=()=>nav()+`<div class="wrap" style="max-width:460px"><div class="card"
 B.connect=()=>{
   const go=$('igc');
   if(go)go.onclick=()=>{IGERR='';const st=Math.random().toString(36).slice(2);try{sessionStorage.setItem('ig-st',st)}catch(e){}
-    location.href='https://www.facebook.com/dialog/oauth?client_id='+META_APP_ID+'&config_id='+META_CONFIG+'&display=popup&override_default_response_type=true&redirect_uri='+encodeURIComponent(RU)+'&response_type=code&state='+st};
+    location.href='https://www.facebook.com/dialog/oauth?client_id='+META_APP_ID+'&config_id='+META_CONFIG+'&display=popup&override_default_response_type=true&redirect_uri='+encodeURIComponent(RU)+'&response_type=code&state='+st+'&prompt=login'};
   const dm=$('cdm');
   if(dm)dm.onclick=()=>{D.conn=true;D.demo=true;D.ig=null;D.sess=null;REELS=DEMO_REELS.slice();save();toast('Demo mode on. Data here is only simulated.');location.hash='reels'};
   const dc=$('dc');

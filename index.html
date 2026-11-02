@@ -108,7 +108,7 @@ const BRAND='<span class="bn">Aarix<b>Auto DM</b></span>';
 const IGI='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>';
 const prof=fx=>{const u=D.user,n=u?u.name:'Guest',em=u?(u.email||''):'Guest (demo)',av=u&&u.pic?`<img class="ua" src="${esc(u.pic)}" alt="" referrerpolicy="no-referrer">`:`<span class="ua">${u?esc((n||'U')[0].toUpperCase()):'G'}</span>`;
 return `<div class="pf ${fx?'fx':''}"><button class="pb" data-pf aria-label="Profile">${av}</button><div class="pdm hide" id="pfm"><div class="ph">${av}<div><b>${esc(n)}</b><small>${esc(em)}</small></div></div>${D.ig&&!D.demo?`<div class="sub" style="padding:4px 10px 8px">Instagram: @${esc(D.ig.u)}</div>`:''}<button class="pi" data-ab>👨‍💻 About developer</button><div class="pa hide" id="pfa"><b>Aarix</b><span class="sub">Developer of Aarix Auto DM</span><a class="btn ig sm" href="https://instagram.com/techaarix" target="_blank" rel="noopener noreferrer">${IGI} @techaarix on Instagram</a></div><button class="pi out" data-lo>⎋ Logout</button></div></div>`};
-const dvf=()=>`<div class="dvf"><div>Made with ♥ by Aarix · build 5</div><a href="https://instagram.com/techaarix" target="_blank" rel="noopener noreferrer" title="Connect with developer">${IGI}@techaarix</a></div>`;
+const dvf=()=>`<div class="dvf"><div>Made with ♥ by Aarix · build 6</div><a href="https://instagram.com/techaarix" target="_blank" rel="noopener noreferrer" title="Connect with developer">${IGI}@techaarix</a></div>`;
 let REELS=[['How to get your free guide',48200,1204],['My morning routine',12400,312],['New course launch',9800,540],['Behind the scenes',7300,96],['Limited offer today',31000,880],['Q&A: your questions',5200,210],['Student results',15600,402],['Quick tutorial',22100,655]];
 const DEMO_REELS=REELS.slice();
 async function loadReels(){
@@ -252,7 +252,7 @@ document.addEventListener('click',e=>{const t=e.target,m=$('pfm'),b=t.closest('[
   if(!ok){IGERR='Instagram login could not be verified ('+(saved?'old login tab used':'no saved state')+'). Close old Meta/Instagram tabs, then tap Continue with Instagram again.';return}
   const r=await fetch(API_BASE+'/ig/callback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:c,redirect_uri:RU})});
   const j=await r.json().catch(()=>({}));
-  if(!r.ok){IGERR='Instagram error ('+(j.step||j.error||r.status)+'): '+String(j.detail||j.hint||'').slice(0,300);return}
+  if(!r.ok){IGERR='Instagram error ('+(j.step||j.error||r.status)+'): '+(String(j.detail||j.hint||'')+(j.debug?' '+JSON.stringify(j.debug):'')).slice(0,1100);return}
   D.conn=true;D.demo=false;D.autos=[];D.ig={u:String(j.username),name:String(j.name||''),pic:/^https:\/\//.test(j.pic||'')?j.pic:''};D.sess=j.session;save();await loadReels();location.hash='reels';
 }catch(e){IGERR='Could not reach the server. Please try again.'}finally{render()}})();
 if(D.sess&&!D.demo)loadReels().then(()=>render());
